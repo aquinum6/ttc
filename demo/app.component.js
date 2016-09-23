@@ -13,7 +13,7 @@ export var AppComponent = (function () {
     };
     AppComponent.decorators = [
         { type: Component, args: [{
-                    moduleId: module.id,
+                    //moduleId: module.id,
                     selector: 'my-app',
                     templateUrl: './app.component.html'
                 },] },

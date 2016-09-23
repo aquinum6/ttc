@@ -3,9 +3,9 @@ import { ttcService } from './canvas.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-    moduleId: module.id,
+    //moduleId: module.id,
     selector: 'ttc',
-    templateUrl: 'canvas.comp.html',
+    templateUrl: './canvas.comp.html',
 
 })
 export class ttcComponent implements AfterViewInit{

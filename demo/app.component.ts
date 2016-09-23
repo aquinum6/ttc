@@ -4,7 +4,7 @@ import 'rxjs/add/operator/take';
 import { ttcService } from '../src';
 
 @Component({
-    moduleId: module.id,
+    //moduleId: module.id,
     selector: 'my-app',
     templateUrl : './app.component.html'
 })
