@@ -3,10 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/map';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/mergeAll';
+import 'rxjs/add/operator/withLatestFrom';
 
 interface IOColor{
     r: number,
@@ -15,26 +16,38 @@ interface IOColor{
     a: number
 }
 
+interface IOColors{
+    main: IOColor,
+    bg: IOColor
+}
+
 @Injectable()
 export class ttcService{
 
     _size$: BehaviorSubject<number> = new BehaviorSubject(500);
-    _mod$: BehaviorSubject<number> = new BehaviorSubject(200);
+    _mod$: BehaviorSubject<number> = new BehaviorSubject(300);
     _multi$: BehaviorSubject<number> = new BehaviorSubject(2);
-    _color$: BehaviorSubject<IOColor> = new BehaviorSubject({
-        r: 171,
-        g: 71,
-        b: 188,
-        a: 1
+    _color$: BehaviorSubject<IOColors> = new BehaviorSubject({
+        main: {
+            r: 171,
+            g: 71,
+            b: 188,
+            a: 1
+        },
+        bg: {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 1
+        }
     });
-    _bgColor$: BehaviorSubject<IOColor> = new BehaviorSubject({
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1
-    });
+    _setup$: BehaviorSubject<{
+        points: Array<{x: number, y: number}>,
+        size: number,
+        mod: number
+    }> = new BehaviorSubject([]);
 
-    _points$: BehaviorSubject<Array<{x: number, y: number}>> =
+    constructor(){
         Observable.combineLatest(
             this._size$,
             this._mod$)
@@ -52,40 +65,90 @@ export class ttcService{
                     }
                 }
 
-                return points;
-
-            });
-
-    constructor(){}
-
-    private setBg(c: CanvasRenderingContext2D){
-
+                return {
+                    points: points,
+                    size: size,
+                    mod: mod
+                };
+            })
+            .subscribe(setup => this._setup$.next(setup));
     }
 
-    private showTable(c: CanvasRenderingContext2D){
-        this.setBg(c);
+    private getColor(c: IOColor){
+        return 'rgba('+ c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')';
+    }
+
+    private setBg(c: CanvasRenderingContext2D, size, color){
+        c.fillStyle = this.getColor(color.bg);
+        c.fillRect(0,0, size, size);
+        c.strokeStyle = this.getColor(color.main);
+        c.lineWidth = 1;
+    }
+
+    private setPath(c: CanvasRenderingContext2D, start: {x: number, y: number}, end: {x: number, y:number}){
+        c.moveTo(
+            start.x,
+            start.y
+        );
+
+        c.lineTo(
+            end.x,
+            end.y
+        );
+    }
+
+    private showTable(c: CanvasRenderingContext2D, val: any){
+        let [setup, multi, color] = val;
+        let [points, size, mod] = [setup.points, setup.size, setup.mod];
+        this.setBg(c, size, color);
+        c.beginPath();
+        for( let i = 0; i < mod; i++ ){
+            this.setPath(c, points[i], points[Math.round(i * multi) % mod]);
+        }
+        c.stroke();
     }
 
     private showTableStepper(c: CanvasRenderingContext2D){
 
     }
 
-    get size$(): Observable<number>{
-        return new Observable<number>(fn => this._size$.subscribe(fn));
-    }
-
-
-
     initTTC(c: CanvasRenderingContext2D){
-        Observable.from([
-            this._size$,
-            this._mod$,
-            this._multi$,
-            this._color$,
-            this._bgColor$])
-            .mergeAll();
+        Observable
+            .combineLatest(
+                this._setup$,
+                this._multi$,
+                this._color$
+            )
+            .subscribe((val: any) => {
+                console.log(val);
+                let [setup, multi, color] = val;
+                this.showTable(c, val);
+            })
+
     }
 
+    get size$(): Observable<number>{
+        return new Observable<number>((fn: any) => this._size$.subscribe(fn));
+    }
 
+    get mod$(): Observable<number>{
+        return new Observable<number>((fn: any) => this._mod$.subscribe(fn));
+    }
+
+    get multi$(): Observable<number>{
+        return new Observable<number>((fn: any) => this._multi$.subscribe(fn));
+    }
+
+    set size(size: number){
+        this._size$.next(size);
+    }
+
+    set mod(mod: number){
+        this._mod$.next(mod);
+    }
+
+    set multi(multi: number){
+        this._multi$.next(multi);
+    }
 
 }

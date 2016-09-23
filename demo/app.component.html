@@ -1,1 +1,11 @@
 <ttc></ttc>
+<div style="color:white;">
+
+    <div>Modulo
+        <button (click)="addModulo()">+</button>
+        {{_ttcs.mod$ | async}}
+        <button (click)="subModulo()">-</button></div>
+
+    <div>Size <button>+</button>{{_ttcs.size$ | async}}<button>-</button></div>
+    <div>Multiply by <button>+</button>{{_ttcs.multi$ | async}}<button>-</button></div>
+</div>
