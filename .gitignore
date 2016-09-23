@@ -40,14 +40,18 @@ jspm_packages
 
 .DS_Store
 typings
-demo/**/*.js
-demo/**/*.js.map
+docs/**/*.js
+docs/**/*.js.map
 src/**/*.js
 src/**/*.js.map
 
-demo/app.component.js
-demo/app.component.js.map
-demo/app.module.js
-demo/app.module.js.map
-demo/main.js
-demo/main.js.map
+docs/app.component.js
+docs/app.component.js.map
+docs/app.module.js
+docs/app.module.js.map
+docs/main.js
+docs/main.js.map
+
+aot
+docs/main.js
+docs/main.js.map

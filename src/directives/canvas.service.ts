@@ -45,7 +45,7 @@ export class ttcService{
         points: Array<{x: number, y: number}>,
         size: number,
         mod: number
-    }> = new BehaviorSubject([]);
+    }> = new BehaviorSubject({points: [], size: 500, mod: 300});
 
     constructor(){
         Observable.combineLatest(
@@ -78,7 +78,7 @@ export class ttcService{
         return 'rgba('+ c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')';
     }
 
-    private setBg(c: CanvasRenderingContext2D, size, color){
+    private setBg(c: CanvasRenderingContext2D, size: any, color: any){
         c.fillStyle = this.getColor(color.bg);
         c.fillRect(0,0, size, size);
         c.strokeStyle = this.getColor(color.main);

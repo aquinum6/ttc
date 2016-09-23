@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ttcComponent implements AfterViewInit{
 
-    @ViewChild("cnvs") _canvas;
+    @ViewChild("cnvs") _canvas: any;
 
     _size$: Observable<number>;
 

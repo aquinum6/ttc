@@ -12,22 +12,12 @@ export class AppComponent {
 
     constructor(public _ttcs: ttcService){}
 
-    addModulo(){
-        this._ttcs.mod$
-            .take(1)
-            .subscribe(e => {
-                console.log(e);
-                this._ttcs.mod = e + 1;
-            });
+    setMulti(e: any){
+        this._ttcs.multi = e;
     }
 
-    subModulo(){
-        this._ttcs.mod$
-            .take(1)
-            .subscribe(e => {
-                console.log(e);
-                this._ttcs.mod = e - 1;
-            });
+    setModulo(e: any){
+        this._ttcs.mod = e;
     }
 
 

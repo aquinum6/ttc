@@ -16,6 +16,8 @@
             '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+            '@angular2-material/core': 'npm:@angular2-material/core/core.umd.js',
+            '@angular2-material/slider': 'npm:@angular2-material/slider/slider.umd.js',
 
             'rxjs': 'npm:rxjs'
         },
