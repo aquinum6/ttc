@@ -44,6 +44,10 @@ demo/**/*.js
 demo/**/*.js.map
 src/**/*.js
 src/**/*.js.map
-demo/app.component.js
 
+demo/app.component.js
 demo/app.component.js.map
+demo/app.module.js
+demo/app.module.js.map
+demo/main.js
+demo/main.js.map
