@@ -1,4 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { ttcService } from './canvas.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     moduleId: module.id,
@@ -11,6 +13,10 @@ export class ttcComponent implements AfterViewInit{
 
     @ViewChild("cnvs") _canvas;
 
+    _size$: Observable<number>;
+
+
+
     _c: any;
     _size: number = 800;
 
@@ -19,7 +25,17 @@ export class ttcComponent implements AfterViewInit{
 
     _points: Array<{x: number, y: number}> = [];
 
-    constructor(){}
+
+
+
+
+
+
+    constructor(private _ttcService: ttcService){
+        this._size$ = this._ttcService.size$;
+
+
+    }
 
     ngAfterViewInit(): void {
         let canvas = this._canvas.nativeElement;
@@ -27,8 +43,10 @@ export class ttcComponent implements AfterViewInit{
 
         console.log(this._c);
 
-        this.calculatePoints();
-        this.showTable();
+        this._ttcService.initTTC(this._c);
+
+        //this.calculatePoints();
+        //this.showTable();
     }
 
     calculatePoints(){

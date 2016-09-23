@@ -1,3 +1,3 @@
-<canvas #cnvs [height]="_size" [width]="_size">
+<canvas #cnvs [height]="size$ | async" [width]="size$ | async">
     Go get Chrome!
 </canvas>
