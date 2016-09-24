@@ -7,7 +7,7 @@
         map: {
             app: './demo',
             'src': './src',
-            lodash: 'npm:lodash/lodash.js',
+            'lodash': 'npm:lodash',
 
             '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
             '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
@@ -31,6 +31,10 @@
             src: {
                 main: './index.js',
                 defaultExtension: 'js'
+            },
+            lodash: {
+                main: './lodash.js',
+                defaultExtension: 'js',
             },
             rxjs: {
                 defaultExtension: 'js'

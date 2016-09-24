@@ -14,7 +14,8 @@
   "files": [
     "demo/app.module.ts",
     "docs/main.ts",
-    "./typings/index.d.ts"
+    "./typings/index.d.ts",
+    "node_modules/@types/lodash/index.d.ts"
   ],
 
   "angularCompilerOptions": {
