@@ -10,6 +10,7 @@ import { ttcService } from '../src';
 })
 export class AppComponent {
 
+    //noinspection SpellCheckingInspection
     constructor(public _ttcs: ttcService){}
 
     setMulti(e: any){
@@ -19,7 +20,4 @@ export class AppComponent {
     setModulo(e: any){
         this._ttcs.mod = e;
     }
-
-
-
 }

@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/mergeAll';
-import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/map';
 
 interface IOColor{
     r: number,
@@ -74,6 +69,7 @@ export class ttcService{
             .subscribe(setup => this._setup$.next(setup));
     }
 
+    //noinspection JSMethodCanBeStatic
     private getColor(c: IOColor){
         return 'rgba('+ c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')';
     }
@@ -85,6 +81,7 @@ export class ttcService{
         c.lineWidth = 1;
     }
 
+    //noinspection JSMethodCanBeStatic
     private setPath(c: CanvasRenderingContext2D, start: {x: number, y: number}, end: {x: number, y:number}){
         c.moveTo(
             start.x,
@@ -108,10 +105,6 @@ export class ttcService{
         c.stroke();
     }
 
-    private showTableStepper(c: CanvasRenderingContext2D){
-
-    }
-
     initTTC(c: CanvasRenderingContext2D){
         Observable
             .combineLatest(
@@ -121,7 +114,7 @@ export class ttcService{
             )
             .subscribe((val: any) => {
                 console.log(val);
-                let [setup, multi, color] = val;
+                //let [setup, multi, color] = val;
                 this.showTable(c, val);
             })
 
