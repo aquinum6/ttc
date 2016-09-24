@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import * as _ from 'lodash';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/do';
 
 interface IColor{
     r: number,
@@ -133,6 +136,10 @@ export class ttcService{
         return new Observable<number>((fn: any) => this._multi$.subscribe(fn));
     }
 
+    get color$(): Observable<IColors>{
+        return new Observable<IColors>((fn: any) => this._color$.subscribe(fn));
+    }
+
     set size(size: number){
         this._size$.next(size);
     }
@@ -143,5 +150,19 @@ export class ttcService{
 
     set multi(multi: number){
         this._multi$.next(multi);
+    }
+
+    set color(c: any){
+        console.log(c);
+        this._color$
+            .take(1)
+            .map((color: IColors) => _.merge(color, c))
+
+            .subscribe(e => {
+                console.log(e);
+                this._color$.next(e);
+            });
+
+
     }
 }

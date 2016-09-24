@@ -7,6 +7,7 @@
         map: {
             app: './demo',
             'src': './src',
+            lodash: 'npm:lodash/lodash.js',
 
             '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
             '@angular/common': 'npm:@angular/common/bundles/common.umd.js',

@@ -8,6 +8,7 @@
       <w>dest</w>
       <w>hammerjs</w>
       <w>jsnext</w>
+      <w>lodash</w>
       <w>polyfill</w>
       <w>rxjs</w>
       <w>systemjs</w>

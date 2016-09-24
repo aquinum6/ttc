@@ -13,4 +13,8 @@
         <input type="number" min="10" max="1000" [value]="_ttcs.mod$ | async" (change)="setModulo($event.target.value)">
     </div>
 
+    <div>Line Color:
+        <input type="color" [value]="getColor(_ttcs.color$ | async)" (change)="setColor($event.target.value)">
+    </div>
+
 </div>
