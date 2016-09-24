@@ -11,5 +11,9 @@
     "types": [
       "hammerjs"
     ]
-  }
+  },
+  "exclude": [
+    "docs/main.ts",
+    "node_modules"
+  ]
 }

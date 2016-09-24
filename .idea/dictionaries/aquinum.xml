@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="aquinum">
     <words>
+      <w>autoprefixer</w>
       <w>cdnjs</w>
       <w>cloudflare</w>
       <w>cnvs</w>
@@ -10,6 +11,7 @@
       <w>polyfill</w>
       <w>rxjs</w>
       <w>systemjs</w>
+      <w>tsconfig</w>
       <w>typings</w>
       <w>uglify</w>
     </words>

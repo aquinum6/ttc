@@ -3,15 +3,12 @@ import { ttcService } from './canvas.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-    //moduleId: module.id,
     selector: 'ttc',
-    templateUrl: './canvas.comp.html',
-
+    templateUrl: '../../src/directives/canvas.comp.html'
 })
 export class ttcComponent implements AfterViewInit{
 
     @ViewChild("cnvs") _canvas: any;
-
     _size$: Observable<number>;
 
     constructor(private _ttcService: ttcService){
