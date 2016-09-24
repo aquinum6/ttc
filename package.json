@@ -4,10 +4,11 @@
   "description": "Times Table Circle",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "ngc": "node_modules/.bin/ngc -p tsconfig-aot.json",
-    "rollup": "node_modules/.bin/rollup -c rollup.js",
+    "start": "gulp && npm run start:server",
+    "start:server": "lite-server -c bs-config-aot.js",
+    "dev": "tsc && concurrently \"npm run tsc:w\" \"gulp css:watch \" \"npm run lite\" ",
     "lite": "lite-server",
+    "gulp": "gulp",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "postinstall": "typings install",
@@ -64,6 +65,7 @@
     "hammerjs": "2.0.8",
     "lite-server": "2.2.2",
     "lodash": "4.16.1",
+    "run-sequence": "1.2.2",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.38",
     "zone.js": "0.6.25"

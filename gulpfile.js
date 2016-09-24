@@ -1,14 +1,14 @@
-
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var foreach = require('gulp-foreach');
 var autoprefixer = require('gulp-autoprefixer');
 var clean_css = require('gulp-clean-css');
 var clean = require('gulp-clean');
+var run = require('run-sequence');
 var exec = require('child_process').exec;
 var path = require('path');
 
-//Build
+
 gulp.task('build:css', function() {
     return gulp.src([
         'demo/**/*.scss',
@@ -47,7 +47,7 @@ gulp.task('build:copy-style', function() {
         .pipe(gulp.dest('docs'));
 });
 
-gulp.task('build:clean', function(){
+gulp.task('build:clean-aot', function(){
     return gulp.src('aot')
         .pipe(clean({
             force: true
@@ -70,4 +70,16 @@ gulp.task('build:pre-build', function() {
         .pipe(clean({
             force: true
         }));
+});
+
+gulp.task('build:clean', ['build:clean-aot','build:pre-build']);
+
+gulp.task('default', function(done) {
+    run('build:pre-build','build:css','build:copy-style','build:ngc','build:rollup','build:clean', function () {
+        done();
+    });
+});
+
+gulp.task('css:watch', function() {
+    gulp.watch(['demo/**/*.scss','src/**/*.scss'],['build:css'])
 });
