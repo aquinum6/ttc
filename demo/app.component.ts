@@ -35,17 +35,6 @@ export class AppComponent {
     }
 
     setColor(c: any){
-        let m  = c.substr(1, 6);
-        let r = parseInt(m.substr(0, 2), 16);
-        let g = parseInt(m.substr(2, 2), 16);
-        let b = parseInt(m.substr(4, 2), 16);
-
-        this._ttcs.color = {
-            main: {
-                r: r,
-                g: g,
-                b: b
-            }
-        };
+        this._ttcs.color = c;
     }
 }

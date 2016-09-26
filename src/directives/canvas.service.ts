@@ -8,6 +8,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/do';
 
+interface IColorRGB {
+    r: number,
+    g: number,
+    b: number
+}
 interface IColor{
     r: number,
     g: number,
@@ -34,6 +39,44 @@ const DEF_BG: IColor = {
     b: 0,
     a: 1
 }; //default background color
+
+const MODE_COLOR_EVEN: number = 0;
+const MODE_POINTS_EVEN: number = 1;
+const MODE_POINTS_STEP: number = 2;
+const MODE_PERCENT_STEP: number = 3;
+
+function isIColor(color: any): color is IColor {
+    return (<IColor>color).a !== undefined;
+}
+
+function isString(color: any): color is string {
+    return typeof color === 'string';
+}
+
+function getRGB(color: string | IColorRGB | IColor): IColorRGB {
+    let c: IColorRGB;
+
+    if(isString(color)){
+        let m = color.substr(0, 1) === '#' ? color.substr(1, 6) : color;
+        c = {
+            r: parseInt(m.substr(0, 2),16),
+            g: parseInt(m.substr(2, 2),16),
+            b: parseInt(m.substr(4, 2),16)
+        };
+    } else if (isIColor(color)){
+        c = {
+            r: color.r,
+            g: color.g,
+            b: color.b
+        };
+    } else {
+        c = Object.assign({}, color);
+    }
+
+    return c;
+}
+
+
 
 @Injectable()
 export class ttcService{
@@ -105,11 +148,41 @@ export class ttcService{
         let [setup, multi, color] = val;
         let [points, size, mod] = [setup.points, setup.size, setup.mod];
         this.setBg(c, size, color);
+
         c.beginPath();
         for( let i = 0; i < mod; i++ ){
             this.setPath(c, points[i], points[Math.round(i * multi) % mod]);
         }
         c.stroke();
+    }
+
+    private showTableStepper(c: CanvasRenderingContext2D, val: any) {
+        let [setup, multi, color] = val;
+        let [points, size, mod] = [setup.points, setup.size, setup.mod];
+
+        let mode = 0;
+        let diff = {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 1
+        };
+
+        let step: IColor = this.getStep(color.main, diff, mod, mode);
+        this.setBg(c, size, color);
+
+        for( let i = 0; i < mod; i++ ){
+            c.strokeStyle = this.getColor({
+                r: Math.round((color.main.r - step.r * i) % 256),
+                g: Math.round((color.main.g - step.g * i) % 256),
+                b: Math.round((color.main.b - step.b * i) % 256),
+                a: ((color.main.a - step.a * i) * 100 % 101) / 100
+            });
+            c.beginPath();
+            this.setPath(c, points[i], points[Math.round(i * multi) % mod]);
+            c.stroke();
+        }
+
     }
 
     initTTC(c: CanvasRenderingContext2D){
@@ -120,7 +193,8 @@ export class ttcService{
                 this._color$
             )
             .subscribe((val: any) => {
-                this.showTable(c, val);
+                //this.showTable(c, val);
+                this.showTableStepper(c, val);
             })
 
     }
@@ -157,13 +231,63 @@ export class ttcService{
         console.log(c);
         this._color$
             .take(1)
-            .map((color: IColors) => _.merge(color, c))
-
+            .map((color: IColors) => _.merge(color, { main: getRGB(c) }))
             .subscribe(e => {
                 console.log(e);
                 this._color$.next(e);
             });
-
-
     }
+
+    private getStep(start, diff, modulo, mode): IColor {
+        let step: IColor = {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 0
+        };
+
+        switch(mode){
+            case MODE_COLOR_EVEN: //color stepper even
+                step = {
+                    r: (start.r - diff.r) / modulo,
+                    g: (start.g - diff.g) / modulo,
+                    b: (start.b - diff.b) / modulo,
+                    a: (start.a - diff.a) / modulo
+                };
+                break;
+            case MODE_POINTS_EVEN: //points even (need modulo in case of points even bigger than x + step > 255)
+                step = {
+                    r: diff.r / modulo,
+                    g: diff.g / modulo,
+                    b: diff.b / modulo,
+                    a: diff.a / modulo
+                };
+                break;
+            case MODE_POINTS_STEP: //points step (need modulo)
+                step = {
+                    r: diff.r,
+                    g: diff.g,
+                    b: diff.b,
+                    a: diff.a
+                };
+                break;
+            case MODE_PERCENT_STEP: //percent step (need modulo)
+                step = {
+                    r: start.r * diff.r,
+                    g: start.g * diff.g,
+                    b: start.b * diff.b,
+                    a: start.a * diff.a
+                };
+        }
+
+        return step;
+    }
+
+
+
+
+
+
+
+
 }
